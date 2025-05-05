@@ -1,8 +1,24 @@
-# React + Vite
+# 📝 My Note Keeper (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the **frontend** of the My Note Keeper app — a simple notes app built with **React.js** to manage your notes with create, update, delete, and search functionalities.
 
-Currently, two official plugins are available:
+👉 The backend API is hosted separately in a different repository: [my-note-keeper-backend](https://github.com/sammahkh/My-Note-Keeper-Backend)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
+
+## 🚀 Features
+
+✅ Create, edit, delete notes  
+✅ Search notes by title or content  
+✅ Light/Dark mode toggle  
+✅ Responsive and clean UI
+
+---
+
+## 🏗️ Tech Stack
+
+- React.js
+- CSS
+- Fetch API (for communication with backend)
+
+
