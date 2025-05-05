@@ -3,6 +3,7 @@ import Header from "./components/Header/Header";
 import NotesList from "./components/NotesList/NotesList";
 import AddEditNoteModal from "./components/AddEditNoteModal/AddEditNoteModal";
 import ConfirmDeleteModal from "./components/ConfirmDeleteModal/ConfirmDeleteModal";
+import SearchBar from "./components/SearchBar/SearchBar";
 import "./App.css";
 
 const App = () => {
@@ -12,11 +13,14 @@ const App = () => {
   const [noteToDelete, setNoteToDelete] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
-  const fetchNotes = async () => {
+  const [searchText, setSearchText] = useState("");
+  const fetchNotes = async (searchText = "") => {
     try {
-      const response = await fetch(
-        "https://sammahkh-my-note-keeper-backend.onrender.com/notes"
-      );
+      const endpoint = searchText
+        ? `https://sammahkh-my-note-keeper-backend.onrender.com/notes/search?query=${searchText}`
+        : `https://sammahkh-my-note-keeper-backend.onrender.com/notes`;
+
+      const response = await fetch(endpoint);
       const data = await response.json();
       setNotes(data);
     } catch (err) {
@@ -25,8 +29,8 @@ const App = () => {
   };
 
   useEffect(() => {
-    fetchNotes();
-  }, []);
+    fetchNotes(searchText);
+  }, [searchText]);
 
   const addNote = async (title, content) => {
     try {
@@ -81,6 +85,10 @@ const App = () => {
     }
   };
 
+  const handleSearchChange = (text) => {
+    setSearchText(text);
+  };
+
   const handleDeleteClick = (id) => {
     setNoteToDelete(id);
     setShowDeleteModal(true);
@@ -112,6 +120,7 @@ const App = () => {
     <div className={`${darkMode && "dark-mode"}`}>
       <div className="container">
         <Header handleToggleDarkMode={setDarkMode} />
+        <SearchBar handleSearchChange={handleSearchChange} />
 
         <NotesList
           notes={notes}
