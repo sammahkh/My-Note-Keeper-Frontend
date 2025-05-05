@@ -9,9 +9,9 @@ const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [notes, setNotes] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
-
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedNote, setSelectedNote] = useState(null);
   const fetchNotes = async () => {
     try {
       const response = await fetch(
@@ -28,20 +28,6 @@ const App = () => {
     fetchNotes();
   }, []);
 
-  const deleteNote = async (id) => {
-    try {
-      await fetch(
-        `https://sammahkh-my-note-keeper-backend.onrender.com/notes/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
-      setNotes((prev) => prev.filter((note) => note._id !== id));
-    } catch (err) {
-      console.error("Error deleting note:", err);
-    }
-  };
-
   const addNote = async (title, content) => {
     try {
       const response = await fetch(
@@ -56,6 +42,42 @@ const App = () => {
       setNotes((prev) => [...prev, addedNote]);
     } catch (err) {
       console.error("Error adding note:", err);
+    }
+  };
+
+  const updateNote = async (id, updatedTitle, updatedContent) => {
+    try {
+      const response = await fetch(
+        `https://sammahkh-my-note-keeper-backend.onrender.com/notes/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: updatedTitle,
+            content: updatedContent,
+          }),
+        }
+      );
+      const updatedNote = await response.json();
+      setNotes((prev) =>
+        prev.map((note) => (note._id === id ? updatedNote : note))
+      );
+    } catch (err) {
+      console.error("Error updating note:", err);
+    }
+  };
+
+  const deleteNote = async (id) => {
+    try {
+      await fetch(
+        `https://sammahkh-my-note-keeper-backend.onrender.com/notes/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      setNotes((prev) => prev.filter((note) => note._id !== id));
+    } catch (err) {
+      console.error("Error deleting note:", err);
     }
   };
 
@@ -76,12 +98,26 @@ const App = () => {
     setNoteToDelete(null);
   };
 
+  const handleNoteClick = (note) => {
+    setSelectedNote(note);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedNote(null);
+  };
+
   return (
     <div className={`${darkMode && "dark-mode"}`}>
       <div className="container">
         <Header handleToggleDarkMode={setDarkMode} />
 
-        <NotesList notes={notes} handleDeleteClick={handleDeleteClick} />
+        <NotesList
+          notes={notes}
+          handleDeleteClick={handleDeleteClick}
+          handleNoteClick={handleNoteClick}
+        />
 
         {showDeleteModal && (
           <ConfirmDeleteModal
@@ -90,15 +126,29 @@ const App = () => {
           />
         )}
 
-        <button className="add-note-btn" onClick={() => setShowModal(true)}>
+        <button
+          className="add-note-btn"
+          onClick={() => {
+            setSelectedNote(null);
+            setShowModal(true);
+          }}
+        >
           +
         </button>
 
         {showModal && (
           <AddEditNoteModal
-            mode="add"
-            onClose={() => setShowModal(false)}
-            onSubmit={addNote}
+            mode={selectedNote ? "edit" : "add"}
+            note={selectedNote}
+            onClose={handleCloseModal}
+            onSubmit={(title, content) => {
+              if (selectedNote) {
+                updateNote(selectedNote._id, title, content);
+              } else {
+                addNote(title, content);
+              }
+              handleCloseModal();
+            }}
           />
         )}
       </div>

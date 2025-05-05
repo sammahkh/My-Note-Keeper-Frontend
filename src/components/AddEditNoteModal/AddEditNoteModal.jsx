@@ -1,15 +1,9 @@
 import React, { useState } from "react";
 import "./AddEditNoteModal.css";
 
-const AddEditNoteModal = ({
-  mode = "add",
-  onClose,
-  onSubmit,
-  initialTitle = "",
-  initialContent = "",
-}) => {
-  const [title, setTitle] = useState(initialTitle);
-  const [content, setContent] = useState(initialContent);
+const AddEditNoteModal = ({ mode = "add", onClose, onSubmit, note }) => {
+  const [title, setTitle] = useState(note ? note.title : "");
+  const [content, setContent] = useState(note ? note.content : "");
 
   const handleSubmit = () => {
     if (!title || !content) return;

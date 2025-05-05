@@ -16,6 +16,11 @@
   position: relative;
 }
 
+.note:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
 .note-title {
   font-weight: bold;
   margin-bottom: 0.3rem;

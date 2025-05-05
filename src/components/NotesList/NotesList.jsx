@@ -1,7 +1,7 @@
 import Note from "./Note";
 import "./NotesList.css";
 
-const NotesList = ({ notes, handleDeleteClick }) => {
+const NotesList = ({ notes, handleDeleteClick, handleNoteClick }) => {
   return (
     <div className="notes-list">
       {notes.map((note) => (
@@ -12,6 +12,7 @@ const NotesList = ({ notes, handleDeleteClick }) => {
           content={note.content}
           creationDate={note.creationDate}
           handleDeleteClick={handleDeleteClick}
+          handleNoteClick={() => handleNoteClick(note)}
         />
       ))}
     </div>
