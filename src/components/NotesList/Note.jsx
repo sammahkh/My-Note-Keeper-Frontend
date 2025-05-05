@@ -1,6 +1,6 @@
 import { FaTrash } from "react-icons/fa";
 
-const Note = ({ id, title, content, handleDeleteNote, creationDate }) => {
+const Note = ({ id, title, content, handleDeleteClick, creationDate }) => {
   const dateOnly = creationDate.slice(0, 10);
 
   return (
@@ -10,7 +10,7 @@ const Note = ({ id, title, content, handleDeleteNote, creationDate }) => {
       <div className="note-footer">
         <small className="note-date">{dateOnly}</small>
         <FaTrash
-          onClick={() => handleDeleteNote(id)}
+          onClick={() => handleDeleteClick(id)}
           className="delete-icon"
           size="1.3em"
         />

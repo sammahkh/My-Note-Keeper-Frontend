@@ -1,6 +1,7 @@
 import Note from "./Note";
 import "./NotesList.css";
-const NotesList = ({ notes, handleDeleteNote }) => {
+
+const NotesList = ({ notes, handleDeleteClick }) => {
   return (
     <div className="notes-list">
       {notes.map((note) => (
@@ -10,7 +11,7 @@ const NotesList = ({ notes, handleDeleteNote }) => {
           title={note.title}
           content={note.content}
           creationDate={note.creationDate}
-          handleDeleteNote={handleDeleteNote}
+          handleDeleteClick={handleDeleteClick}
         />
       ))}
     </div>
