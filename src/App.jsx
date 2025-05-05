@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./components/Header/Header";
 import NotesList from "./components/NotesList/NotesList";
-import { useState, useEffect } from "react";
+import AddEditNoteModal from "./components/AddEditNoteModal/AddEditNoteModal";
 import "./App.css";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [notes, setNotes] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   const fetchNotes = async () => {
     try {
@@ -32,16 +33,44 @@ const App = () => {
           method: "DELETE",
         }
       );
-      setNotes(notes.filter((note) => note._id !== id));
+      setNotes((prev) => prev.filter((note) => note._id !== id));
     } catch (err) {
       console.error("Error deleting note:", err);
     }
   };
+
+  const addNote = async (title, content) => {
+    try {
+      const response = await fetch(
+        "https://sammahkh-my-note-keeper-backend.onrender.com/notes",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, content }),
+        }
+      );
+      const addedNote = await response.json();
+      setNotes((prev) => [...prev, addedNote]);
+    } catch (err) {
+      console.error("Error adding note:", err);
+    }
+  };
+
   return (
     <div className={`${darkMode && "dark-mode"}`}>
       <div className="container">
         <Header handleToggleDarkMode={setDarkMode} />
         <NotesList notes={notes} handleDeleteNote={deleteNote} />
+        <button className="add-note-btn" onClick={() => setShowModal(true)}>
+          +
+        </button>
+        {showModal && (
+          <AddEditNoteModal
+            mode="add"
+            onClose={() => setShowModal(false)}
+            onSubmit={addNote}
+          />
+        )}
       </div>
     </div>
   );
