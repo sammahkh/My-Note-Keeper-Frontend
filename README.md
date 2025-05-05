@@ -8,10 +8,10 @@ This is the **frontend** of the My Note Keeper app — a simple notes app built 
 
 ## Features
 
- Create, edit, delete notes  
- Search notes by title or content  
- Light/Dark mode toggle  
- Responsive and clean UI
+- Create, edit, delete notes  
+- Search notes by title or content  
+- Light/Dark mode toggle  
+- Responsive and clean UI
 
 ---
 
