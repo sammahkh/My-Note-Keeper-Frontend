@@ -15,7 +15,7 @@ This is the **frontend** of the My Note Keeper app — a simple notes app built 
 
 ---
 
-## 🏗Tech Stack
+## Tech Stack
 
 - React.js
 - CSS
